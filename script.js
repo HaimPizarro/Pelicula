@@ -1,17 +1,11 @@
-// Funciones básicas para la tienda de películas
-
-// Función para mostrar mensaje de bienvenida al cargar la página
 document.addEventListener('DOMContentLoaded', function() {
     console.log('¡Bienvenido a CineMax!');
     
-    // Agregar efectos hover adicionales a las tarjetas
     agregarEfectosHover();
     
-    // Inicializar contador de visitas (simulado)
     mostrarContadorVisitas();
 });
 
-// Función para agregar efectos hover a las tarjetas
 function agregarEfectosHover() {
     const tarjetas = document.querySelectorAll('.categoria, .pelicula');
     
@@ -26,7 +20,6 @@ function agregarEfectosHover() {
     });
 }
 
-// Función para simular un contador de visitas
 function mostrarContadorVisitas() {
     const visitas = localStorage.getItem('visitas') || 0;
     const nuevasVisitas = parseInt(visitas) + 1;
@@ -35,13 +28,11 @@ function mostrarContadorVisitas() {
     console.log(`Número de visitas: ${nuevasVisitas}`);
 }
 
-// Función para manejar clics en botones de compra (simulado)
 function agregarAlCarrito(nombrePelicula, precio) {
     alert(`¡${nombrePelicula} agregada al carrito por ${precio}!`);
     console.log(`Película agregada: ${nombrePelicula} - Precio: ${precio}`);
 }
 
-// Función para filtrar películas por precio (simulado)
 function filtrarPorPrecio(precioMaximo) {
     const precios = document.querySelectorAll('.precio');
     
@@ -57,7 +48,6 @@ function filtrarPorPrecio(precioMaximo) {
     });
 }
 
-// Función para mostrar información adicional de una película
 function mostrarInfo(titulo, año, descripcion) {
     const info = `
         Título: ${titulo}
@@ -69,7 +59,6 @@ function mostrarInfo(titulo, año, descripcion) {
     return info;
 }
 
-// Función para validar navegación
 function validarNavegacion() {
     const enlaces = document.querySelectorAll('nav a');
     
@@ -80,7 +69,6 @@ function validarNavegacion() {
     });
 }
 
-// Función para animar elementos al hacer scroll (básica)
 function animarAlScroll() {
     const elementos = document.querySelectorAll('.categoria, .pelicula');
     
@@ -101,13 +89,11 @@ function animarAlScroll() {
     });
 }
 
-// Inicializar funciones adicionales
 document.addEventListener('DOMContentLoaded', function() {
     validarNavegacion();
     animarAlScroll();
 });
 
-// Función para cambiar tema (día/noche) - básica
 function cambiarTema() {
     const body = document.body;
     body.classList.toggle('tema-oscuro');
@@ -118,7 +104,6 @@ function cambiarTema() {
     console.log(`Tema cambiado a: ${temaActual}`);
 }
 
-// Cargar tema guardado
 document.addEventListener('DOMContentLoaded', function() {
     const temaGuardado = localStorage.getItem('tema');
     if (temaGuardado === 'oscuro') {
