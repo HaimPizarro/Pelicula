@@ -1,0 +1,317 @@
+/* Variables CSS */
+:root {
+    --color-principal: #4a90e2;
+    --color-secundario: #f39c12;
+    --color-acento: #e74c3c;
+    --color-fondo: #f8f9fa;
+    --color-texto: #333;
+    --sombra: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    line-height: 1.6;
+}
+
+/* Header */
+header {
+    background: linear-gradient(135deg, var(--color-principal), #357abd);
+    color: white;
+    text-align: center;
+    padding: 2rem 0;
+    animation: deslizarDesdeArriba 1s ease-out;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+header p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+/* Navegación */
+nav {
+    background: white;
+    box-shadow: var(--sombra);
+    padding: 1rem 0;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+nav a {
+    text-decoration: none;
+    color: var(--color-principal);
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+nav a:hover {
+    background: var(--color-principal);
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* Contenido principal */
+main {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+h2 {
+    text-align: center;
+    color: var(--color-principal);
+    font-size: 2rem;
+    margin-bottom: 2rem;
+}
+
+/* Categorías */
+.categorias {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    padding: 1rem 0;
+}
+
+.categoria {
+    background: white;
+    border-radius: 10px;
+    box-shadow: var(--sombra);
+    padding: 1.5rem;
+    text-align: center;
+    transition: transform 0.3s ease;
+    animation: aparecerConZoom 0.6s ease-out;
+}
+
+.categoria:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.categoria img {
+    width: 100%;
+    max-width: 200px;
+    height: 150px;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.categoria h3 {
+    color: var(--color-principal);
+    margin-bottom: 0.5rem;
+    font-size: 1.3rem;
+}
+
+.categoria p {
+    color: #666;
+    margin-bottom: 1rem;
+}
+
+/* Películas */
+.peliculas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.pelicula {
+    background: white;
+    border-radius: 10px;
+    box-shadow: var(--sombra);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    animation: deslizarDesdeAbajo 0.5s ease-out;
+}
+
+.pelicula:hover {
+    transform: scale(1.02);
+}
+
+.pelicula img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+}
+
+.pelicula-info {
+    padding: 1.5rem;
+}
+
+.pelicula h3 {
+    color: var(--color-principal);
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+}
+
+.pelicula-descripcion {
+    color: #666;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.pelicula-año {
+    color: #888;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.precio-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.precio {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--color-principal);
+}
+
+.descuento {
+    background: var(--color-acento);
+    color: white;
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    animation: parpadear 2s infinite;
+}
+
+/* Botones */
+.btn {
+    display: inline-block;
+    background: var(--color-secundario);
+    color: white;
+    padding: 0.8rem 1.5rem;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    background: #e67e22;
+    transform: translateY(-2px);
+}
+
+.btn-volver {
+    background: var(--color-principal);
+    margin-bottom: 2rem;
+}
+
+.btn-volver:hover {
+    background: #357abd;
+}
+
+/* Footer */
+footer {
+    background: var(--color-principal);
+    color: white;
+    text-align: center;
+    padding: 2rem 0;
+    margin-top: 3rem;
+}
+
+/* Animaciones */
+@keyframes deslizarDesdeArriba {
+    0% {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes deslizarDesdeAbajo {
+    0% {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes aparecerConZoom {
+    0% {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes parpadear {
+    0%, 100% { 
+        opacity: 1; 
+    }
+    50% { 
+        opacity: 0.7; 
+    }
+}
+
+/* Media Queries para responsividad */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 2rem;
+    }
+    
+    nav ul {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+    
+    .categorias,
+    .peliculas {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 1.8rem;
+    }
+    
+    main {
+        padding: 0 0.5rem;
+    }
+    
+    .categoria,
+    .pelicula-info {
+        padding: 1rem;
+    }
+}
