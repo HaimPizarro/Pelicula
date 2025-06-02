@@ -116,12 +116,11 @@ document.addEventListener('DOMContentLoaded', function() {
 /* === VALIDACIÓN DEL FORMULARIO DE REGISTRO === */
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('registroForm');
-  if (!form) return; // Estamos en otra página
+  if (!form) return; 
 
   form.addEventListener('submit', e => {
-    e.preventDefault(); // Evita envío si hay errores
+    e.preventDefault(); 
 
-    // Limpia estados previos
     Array.from(form.elements).forEach(el => el.classList.remove('is-invalid'));
 
     // Captura valores

@@ -1,77 +1,110 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Películas de Acción - CineMax</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CineMax │ Acción</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
-    <header>
-        <h1>🎬 CineMax</h1>
-        <p>Tu tienda de películas favorita</p>
-    </header>
 
-    <nav>
-        <ul>
-            <li><a href="index.html">Inicio</a></li>
-            <li><a href="comedia.html">Comedia</a></li>
-            <li><a href="drama.html">Drama</a></li>
-            <li><a href="terror.html">Terror</a></li>
-            <li class="nav-item"><a class="nav-link" href="registro.html">Registro</a></li>
+<body class="bg-light">
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
+    <div class="container">
+      <a class="navbar-brand fs-3" href="index.html">🎬 CineMax</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="comedia.html">Comedia</a></li>
+          <li class="nav-item"><a class="nav-link" href="drama.html">Drama</a></li>
+          <li class="nav-item"><a class="nav-link" href="terror.html">Terror</a></li>
+          <li class="nav-item"><a class="nav-link active" aria-current="page" href="estrategia.html">Estrategia</a></li>
+          <li class="nav-item"><a class="nav-link" href="registro.html">Registro</a></li>
         </ul>
-    </nav>
+      </div>
+    </div>
+  </nav>
 
-    <main>
-        <a href="index.html" class="btn btn-volver">← Volver al Inicio</a>
-        
-        <h2>💥 Películas de Acción</h2>
-        
-        <div class="peliculas">
-            <div class="pelicula">
-                <img src="https://via.placeholder.com/300x400/e74c3c/ffffff?text=Top+Gun" alt="Top Gun: Maverick">
-                <div class="pelicula-info">
-                    <h3>Top Gun: Maverick</h3>
-                    <p class="pelicula-año">Año: 2022</p>
-                    <p class="pelicula-descripcion">Pete "Maverick" Mitchell regresa como instructor de élite para entrenar a una nueva generación de pilotos en una misión imposible.</p>
-                    <div class="precio-info">
-                        <span class="precio">$12.990</span>
-                        <span class="descuento">20% OFF</span>
-                    </div>
-                </div>
-            </div>
+  <!-- PARALLAX + BLUR -->
+  <header class="py-5 text-center hero-drama shadow-sm">
+    <div class="container">
+      <h1 class="fw-bold display-5">Películas de Acción 💥</h1>
+      <p class="lead">Velocidad, adrenalina y grandes explosiones.</p>
+    </div>
+  </header>
 
-            <div class="pelicula">
-                <img src="https://via.placeholder.com/300x400/e74c3c/ffffff?text=John+Wick" alt="John Wick 4">
-                <div class="pelicula-info">
-                    <h3>John Wick 4</h3>
-                    <p class="pelicula-año">Año: 2023</p>
-                    <p class="pelicula-descripcion">John Wick descubre un camino para derrotar a la Mesa Directiva, pero para ganar su libertad debe enfrentar a un nuevo enemigo.</p>
-                    <div class="precio-info">
-                        <span class="precio">$15.990</span>
-                    </div>
-                </div>
-            </div>
+  <main class="container py-5">
+    <div class="row row-cols-1 row-cols-md-3 g-4 fade-up">
 
-            <div class="pelicula">
-                <img src="https://via.placeholder.com/300x400/e74c3c/ffffff?text=Fast+X" alt="Rápidos y Furiosos X">
-                <div class="pelicula-info">
-                    <h3>Rápidos y Furiosos X</h3>
-                    <p class="pelicula-año">Año: 2023</p>
-                    <p class="pelicula-descripcion">Dom Toretto y su familia enfrentan a su enemigo más letal: una amenaza que emerge de las sombras del pasado.</p>
-                    <div class="precio-info">
-                        <span class="precio">$14.990</span>
-                        <span class="descuento">10% OFF</span>
-                    </div>
-                </div>
-            </div>
+      <!-- Top Gun Maverick -->
+      <div class="col">
+        <div class="card h-100 shadow-sm border-0 position-relative">
+          <span class="badge bg-danger badge-discount">-20%</span>
+          <div class="ratio ratio-4x3">
+            <img src="https://light.pawa.cl/img/2022/06/12014901/1653297680_702523_1653300885_noticia_normal.jpg"
+                 class="card-img-top object-fit-cover rounded-top"
+                 alt="Top Gun Maverick">
+          </div>
+          <div class="card-body d-flex flex-column text-center">
+            <h5 class="card-title fw-semibold">Top Gun: Maverick (2022)</h5>
+            <p class="card-text flex-grow-1">Maverick entrena a una nueva generación de pilotos…</p>
+            <div class="s-price mb-3">$12.990</div>
+            <button class="btn btn-brand w-100 mt-auto" onclick="agregarAlCarrito('Top Gun Maverick', '$12.990')">Agregar al carrito</button>
+          </div>
         </div>
-    </main>
+      </div>
 
-    <footer>
-        <p>&copy; 2024 CineMax. Todos los derechos reservados.</p>
-    </footer>
+      <!-- John Wick 4 -->
+      <div class="col">
+        <div class="card h-100 shadow-sm border-0 position-relative">
+          <div class="ratio ratio-4x3">
+            <img src="https://miro.medium.com/v2/resize:fit:1400/1*7P6HwA3O6AnzxfbdHvtZVA.jpeg"
+                 class="card-img-top object-fit-cover rounded-top"
+                 alt="John Wick 4">
+          </div>
+          <div class="card-body d-flex flex-column text-center">
+            <h5 class="card-title fw-semibold">John Wick 4 (2023)</h5>
+            <p class="card-text flex-grow-1">John Wick se enfrenta a un nuevo enemigo para obtener su libertad.</p>
+            <div class="s-price mb-3">$15.990</div>
+            <button class="btn btn-brand w-100 mt-auto" onclick="agregarAlCarrito('John Wick 4', '$15.990')">Agregar al carrito</button>
+          </div>
+        </div>
+      </div>
 
-    <script src="script.js"></script>
+      <!-- Rápidos y Furiosos X -->
+      <div class="col">
+        <div class="card h-100 shadow-sm border-0 position-relative">
+          <span class="badge bg-danger badge-discount">-10%</span>
+          <div class="ratio ratio-4x3">
+            <img src="https://m.media-amazon.com/images/S/pv-target-images/8fd9d8b072906d80bbf485978430e97f7033a08d111a459727bb5c720ad37471.jpg"
+                 class="card-img-top object-fit-cover rounded-top"
+                 alt="Rápidos y Furiosos X">
+          </div>
+          <div class="card-body d-flex flex-column text-center">
+            <h5 class="card-title fw-semibold">Rápidos y Furiosos X (2023)</h5>
+            <p class="card-text flex-grow-1">La familia Toretto enfrenta a su enemigo más letal.</p>
+            <div class="s-price mb-3">$14.990</div>
+            <button class="btn btn-brand w-100 mt-auto" onclick="agregarAlCarrito('Rápidos y Furiosos X', '$14.990')">Agregar al carrito</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-dark text-white text-center py-4 mt-auto">
+    <div class="container">
+      <small>© 2024 CineMax. Todos los derechos reservados.</small>
+    </div>
+  </footer>
+
+  <!-- Bootstrap + script -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
