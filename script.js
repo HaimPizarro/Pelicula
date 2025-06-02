@@ -110,3 +110,53 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.classList.add('tema-oscuro');
     }
 });
+
+
+
+/* === VALIDACIÓN DEL FORMULARIO DE REGISTRO === */
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('registroForm');
+  if (!form) return; // Estamos en otra página
+
+  form.addEventListener('submit', e => {
+    e.preventDefault(); // Evita envío si hay errores
+
+    // Limpia estados previos
+    Array.from(form.elements).forEach(el => el.classList.remove('is-invalid'));
+
+    // Captura valores
+    const nombre     = document.getElementById('nombre').value.trim();
+    const usuario    = document.getElementById('usuario').value.trim();
+    const correo     = document.getElementById('correo').value.trim();
+    const fechaNac   = document.getElementById('fechaNac').value;
+    const clave      = document.getElementById('clave').value;
+    const clave2     = document.getElementById('clave2').value;
+
+    /* Reglas: email formato, contraseña fuerza, >=13 años, campos no vacíos */
+    let valido = true;
+
+    const hoy = new Date();
+    const años = hoy.getFullYear() - new Date(fechaNac).getFullYear();
+
+    const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
+    const passRegex  = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{6,18}$/;
+
+    const marcarError = id => {
+      document.getElementById(id).classList.add('is-invalid');
+      valido = false;
+    };
+
+    if (!nombre)        marcarError('nombre');
+    if (!usuario)       marcarError('usuario');
+    if (!emailRegex.test(correo)) marcarError('correo');
+    if (!fechaNac || años < 13)   marcarError('fechaNac');
+    if (!passRegex.test(clave))   marcarError('clave');
+    if (clave !== clave2)         marcarError('clave2');
+
+    if (!valido) return; // Sale si algún campo es inválido
+
+    /* Simula registro exitoso */
+    alert('🎉 Registro exitoso. ¡Bienvenido/a a CineMax!');
+    form.reset();
+  });
+});
