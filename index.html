@@ -4,14 +4,35 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>CineMax │ Inicio</title>
+
+  <!-- Bootstrap 5 CSS -->
   <link
     href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
     rel="stylesheet"
   />
-  <link rel="stylesheet" href="styles.css" />
+  <!-- Tu CSS global (hero-drama, badge-discount, s-price, btn-brand, etc.) -->
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    /* Ajuste opcional: ancho del Offcanvas del carrito */
+    .offcanvas-cart {
+      width: 350px;
+    }
+    /* Cuando el carrito esté vacío */
+    .empty-cart {
+      text-align: center;
+      padding: 2rem 1rem;
+      color: #666;
+    }
+  </style>
 </head>
 
+<!-- 
+  body con flex para footer sticky:
+  - d-flex flex-column: habilita flex vertical 
+  - min-vh-100: altura mínima = 100% del viewport
+-->
 <body class="bg-light d-flex flex-column min-vh-100">
+  <!-- NAVBAR -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
     <div class="container">
       <a class="navbar-brand fs-3" href="index.html">🎬 CineMax</a>
@@ -25,7 +46,8 @@
       </button>
 
       <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
+        <!-- Menú izquierdo -->
+        <ul class="navbar-nav me-auto">
           <li class="nav-item">
             <a
               class="nav-link active"
@@ -34,15 +56,123 @@
               >Inicio</a
             >
           </li>
+          <!-- Panel Admin (solo admin) -->
+          <li class="nav-item admin-only d-none">
+            <a class="nav-link" href="admin.html">🛡️ Panel Admin</a>
+          </li>
           <li class="nav-item"><a class="nav-link" href="comedia.html">Comedia</a></li>
           <li class="nav-item"><a class="nav-link" href="drama.html">Drama</a></li>
           <li class="nav-item"><a class="nav-link" href="terror.html">Terror</a></li>
           <li class="nav-item"><a class="nav-link" href="estrategia.html">Estrategia</a></li>
-          <li class="nav-item"><a class="nav-link" href="register.html">Registro</a></li>
+        </ul>
+
+        <!-- Menú derecho: carrito + usuario/registro/login -->
+        <ul class="navbar-nav ms-auto align-items-center">
+          <!-- Icono de carrito -->
+          <li class="nav-item me-3">
+            <a
+              class="nav-link position-relative"
+              href="#"
+              data-bs-toggle="offcanvas"
+              data-bs-target="#offcanvasCart"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="currentColor"
+                class="bi bi-cart3"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M0 1.5A.5.5 0 0 1 .5 1h1a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 
+                     .491.592l-1.5 8A.5.5 0 0 1 13 13H4a.5.5 0 0 1-.491-.408L1.01 
+                     3.607  .607 2H.5a.5.5 0 0 1-.5-.5zM3.102 
+                     5L4.415 12h8.17l1.313-7H3.102zM5 12a2 
+                     2 0 1 0 0 4 2 2 0 0 0 0-4zm7 
+                     0a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"
+                />
+              </svg>
+              <span
+                id="cart-count-badge"
+                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                style="font-size: 0.75rem;"
+                >0</span
+              >
+            </a>
+          </li>
+
+          <!-- Cuando NO hay sesión -->
+          <div id="menu-sin-sesion">
+            <li class="nav-item">
+              <a class="nav-link" href="register.html">📝 Registro</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="login.html">🔐 Iniciar Sesión</a>
+            </li>
+          </div>
+
+          <!-- Cuando SÍ hay sesión -->
+          <div id="menu-con-sesion" class="d-none">
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                role="button"
+                data-bs-toggle="dropdown"
+              >
+                <span id="usuario-nombre">👤 Usuario</span>
+                <span
+                  id="usuario-rol"
+                  class="badge bg-secondary ms-1"
+                  >Cliente</span
+                >
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li>
+                  <a class="dropdown-item" href="perfil.html">👤 Mi Perfil</a>
+                </li>
+                <li>
+                  <a class="dropdown-item cliente-only d-none" href="mis-peliculas.html"
+                    >🎬 Mis Películas</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item admin-only d-none" href="admin.html"
+                    >🛡️ Panel Admin</a
+                  >
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a class="dropdown-item" href="#" onclick="cerrarSesion()"
+                    >🚪 Cerrar Sesión</a
+                  >
+                </li>
+              </ul>
+            </li>
+          </div>
         </ul>
       </div>
     </div>
   </nav>
+
+  <!-- MENSAJE DE BIENVENIDA PERSONALIZADO -->
+  <div
+    id="bienvenida-usuario"
+    class="alert alert-success alert-dismissible fade show m-0 d-none"
+  >
+    <div class="container">
+      <div class="d-flex align-items-center">
+        <div class="flex-grow-1">
+          <strong>¡Bienvenido/a de vuelta!</strong>
+          <span id="mensaje-bienvenida"
+            >Has iniciado sesión correctamente.</span
+          >
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+    </div>
+  </div>
 
   <!-- HEADER PARALLAX + BLUR -->
   <header
@@ -50,17 +180,94 @@
     style="background-image: url('https://png.pngtree.com/thumb_back/fh260/background/20211011/pngtree-modern-liquid-gradient-colors-abstract-background-design-template-for-brochures-flyers-image_910976.png');"
   >
     <div class="container">
-      <h1 class="fw-bold display-5">Nuestras Categorías</h1>
-      <p class="lead mb-0">Explora la mejor selección de películas</p>
+      <h1 class="fw-bold display-5" id="titulo-principal">
+        Nuestras Categorías
+      </h1>
+      <p class="lead mb-0" id="subtitulo-principal">
+        Explora la mejor selección de películas
+      </p>
     </div>
   </header>
 
   <main class="container my-5 flex-grow-1">
-    <div class="row row-cols-1 row-cols-md-2 g-4">
+    <!-- PANEL DE ADMINISTRADOR (Solo visible para admins) -->
+    <div id="panel-admin-preview" class="row mb-5 admin-only d-none">
+      <div class="col-12">
+        <div class="card border-warning">
+          <div class="card-header bg-warning text-dark">
+            <h5 class="mb-0">🛡️ Panel de Administrador</h5>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-3">
+                <div class="card bg-primary text-white text-center">
+                  <div class="card-body">
+                    <h3 id="total-usuarios">24</h3>
+                    <small>Usuarios Registrados</small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="card bg-success text-white text-center">
+                  <div class="card-body">
+                    <h3 id="total-peliculas">156</h3>
+                    <small>Películas Disponibles</small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="card bg-info text-white text-center">
+                  <div class="card-body">
+                    <h3 id="sesiones-activas">8</h3>
+                    <small>Sesiones Activas</small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="card bg-danger text-white text-center">
+                  <div class="card-body">
+                    <h3 id="reportes-pendientes">3</h3>
+                    <small>Reportes Pendientes</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="text-center mt-3">
+              <a href="admin.html" class="btn btn-warning">🛡️ Ir al Panel Completo</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
+    <!-- RECOMENDACIONES PERSONALIZADAS (Solo para usuarios logueados) -->
+    <div id="recomendaciones-usuario" class="row mb-5 d-none">
+      <div class="col-12">
+        <div class="card border-info">
+          <div class="card-header bg-info text-white">
+            <h5 class="mb-0">✨ Recomendadas Para Ti</h5>
+          </div>
+          <div class="card-body">
+            <p class="text-muted">
+              Basado en tus géneros favoritos:
+              <span id="generos-favoritos"></span>
+            </p>
+            <div class="row" id="peliculas-recomendadas">
+              <!-- Las recomendaciones se cargarán dinámicamente -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CATEGORÍAS PRINCIPALES -->
+    <div class="row row-cols-1 row-cols-md-2 g-4">
       <!-- COMEDIA -->
       <div class="col">
-        <div class="card h-100 shadow-sm border-0 position-relative overflow-hidden">
+        <div
+          class="card h-100 shadow-sm border-0 position-relative overflow-hidden categoria-card"
+          data-categoria="comedia"
+        >
           <img
             src="https://es.web.img2.acsta.net/pictures/23/07/20/11/29/5479684.jpg"
             alt="Fondo Comedia"
@@ -73,13 +280,17 @@
             <h5 class="card-title">🎭 Películas de Comedia</h5>
             <p class="card-text">Ríe sin parar con las comedias más divertidas.</p>
             <a href="comedia.html" class="btn btn-brand mt-3 mx-auto">Ver Películas</a>
+            <small class="mt-2 opacity-75">24 películas disponibles</small>
           </div>
         </div>
       </div>
 
       <!-- DRAMA -->
       <div class="col">
-        <div class="card h-100 shadow-sm border-0 position-relative overflow-hidden">
+        <div
+          class="card h-100 shadow-sm border-0 position-relative overflow-hidden categoria-card"
+          data-categoria="drama"
+        >
           <img
             src="https://m.media-amazon.com/images/M/MV5BNTFlZDI1YWQtMTVjNy00YWU1LTg2YjktMTlhYmRiYzQ3NTVhXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg"
             alt="Fondo Drama"
@@ -92,13 +303,17 @@
             <h5 class="card-title">🎬 Películas de Drama</h5>
             <p class="card-text">Historias profundas que tocan el corazón.</p>
             <a href="drama.html" class="btn btn-brand mt-3 mx-auto">Ver Películas</a>
+            <small class="mt-2 opacity-75">31 películas disponibles</small>
           </div>
         </div>
       </div>
 
       <!-- TERROR -->
       <div class="col">
-        <div class="card h-100 shadow-sm border-0 position-relative overflow-hidden">
+        <div
+          class="card h-100 shadow-sm border-0 position-relative overflow-hidden categoria-card"
+          data-categoria="terror"
+        >
           <img
             src="https://es.web.img3.acsta.net/pictures/23/01/25/11/55/4525883.jpg"
             alt="Fondo Terror"
@@ -113,13 +328,17 @@
               Experimenta el miedo con los títulos más escalofriantes.
             </p>
             <a href="terror.html" class="btn btn-brand mt-3 mx-auto">Ver Películas</a>
+            <small class="mt-2 opacity-75">18 películas disponibles</small>
           </div>
         </div>
       </div>
 
-      <!-- ESTRATEGIA -->
+      <!-- ESTRATEGIA/ACCIÓN -->
       <div class="col">
-        <div class="card h-100 shadow-sm border-0 position-relative overflow-hidden">
+        <div
+          class="card h-100 shadow-sm border-0 position-relative overflow-hidden categoria-card"
+          data-categoria="accion"
+        >
           <img
             src="https://light.pawa.cl/img/2022/06/12014901/1653297680_702523_1653300885_noticia_normal.jpg"
             alt="Fondo Acción"
@@ -134,10 +353,10 @@
               Velocidad, adrenalina y grandes explosiones.
             </p>
             <a href="estrategia.html" class="btn btn-brand mt-3 mx-auto">Ver Películas</a>
+            <small class="mt-2 opacity-75">27 películas disponibles</small>
           </div>
         </div>
       </div>
-
     </div>
   </main>
 
@@ -148,8 +367,162 @@
     </div>
   </footer>
 
-  <!-- Bootstrap JS + script-->
+  <!-- OFFCANVAS: Carrito de Compras -->
+  <div
+    class="offcanvas offcanvas-end offcanvas-cart"
+    tabindex="-1"
+    id="offcanvasCart"
+    aria-labelledby="offcanvasCartLabel"
+  >
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="offcanvasCartLabel">🛒 Tu Carrito</h5>
+      <button
+        type="button"
+        class="btn-close text-reset"
+        data-bs-dismiss="offcanvas"
+        aria-label="Cerrar"
+      ></button>
+    </div>
+    <div class="offcanvas-body d-flex flex-column">
+      <!-- Lista de items -->
+      <ul id="cart-items-list" class="list-group mb-3">
+        <!-- Se rellenará dinámicamente -->
+      </ul>
+
+      <!-- Si está vacío -->
+      <div id="empty-cart" class="empty-cart">
+        Tu carrito está vacío
+      </div>
+
+      <!-- Totales y botón de checkout -->
+      <div id="cart-footer" class="mt-auto d-none">
+        <div class="d-flex justify-content-between mb-3">
+          <strong>Total:</strong>
+          <span id="cart-total-amount">$0</span>
+        </div>
+        <button class="btn btn-brand w-100">Ir a Pagar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS + tu script.js -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="script.js"></script>
+  <script src="javascript/script.js"></script>
+
+  <script>
+    // =============================
+    //             CARRITO
+    // =============================
+
+    // 1) Obtener carrito desde localStorage (o inicializar vacío)
+    function obtenerCarrito() {
+      const cart = localStorage.getItem('cineMaxCart');
+      return cart ? JSON.parse(cart) : [];
+    }
+
+    // 2) Guardar carrito en localStorage
+    function guardarCarrito(cart) {
+      localStorage.setItem('cineMaxCart', JSON.stringify(cart));
+    }
+
+    // 3) Actualizar badge de carrito (contador)
+    function actualizarBadge() {
+      const cart = obtenerCarrito();
+      const count = cart.reduce((sum, item) => sum + item.cantidad, 0);
+      const badge = document.getElementById('cart-count-badge');
+      badge.textContent = count;
+      badge.style.display = count > 0 ? 'inline-block' : 'none';
+    }
+
+    // 4) Renderizar lista de items en el offcanvas
+    function renderizarCarrito() {
+      const cart = obtenerCarrito();
+      const list = document.getElementById('cart-items-list');
+      const emptyDiv = document.getElementById('empty-cart');
+      const footer = document.getElementById('cart-footer');
+      const totalAmountEl = document.getElementById('cart-total-amount');
+
+      // Limpiar lista
+      list.innerHTML = '';
+
+      if (cart.length === 0) {
+        emptyDiv.classList.remove('d-none');
+        footer.classList.add('d-none');
+        return;
+      }
+
+      emptyDiv.classList.add('d-none');
+      footer.classList.remove('d-none');
+
+      let total = 0;
+      cart.forEach((item, idx) => {
+        const itemTotal = item.precio * item.cantidad;
+        total += itemTotal;
+
+        const li = document.createElement('li');
+        li.className = 'list-group-item d-flex justify-content-between align-items-center';
+        li.innerHTML = `
+          <div>
+            <strong>${item.nombre}</strong>
+            <br>
+            <small>$${item.precio.toLocaleString()} x ${item.cantidad}</small>
+          </div>
+          <div>
+            <button class="btn btn-sm btn-outline-danger remove-item-btn" data-index="${idx}">
+              &times;
+            </button>
+          </div>
+        `;
+        list.appendChild(li);
+      });
+
+      totalAmountEl.textContent = `$${total.toLocaleString()}`;
+
+      // Añadir listeners para los botones “remove”
+      document.querySelectorAll('.remove-item-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const index = parseInt(btn.dataset.index);
+          cart.splice(index, 1);
+          guardarCarrito(cart);
+          actualizarBadge();
+          renderizarCarrito();
+        });
+      });
+    }
+
+    // 5) Función global: agregar al carrito
+    function agregarAlCarrito(nombre, precioStr) {
+      // precioStr viene como "$16.990" o similar
+      const precioNum = parseInt(precioStr.replace('$', '').replace(/\./g, ''));
+      let cart = obtenerCarrito();
+
+      // ¿Ya existe este producto en el carrito?
+      const existente = cart.find(item => item.nombre === nombre);
+      if (existente) {
+        existente.cantidad += 1;
+      } else {
+        cart.push({ nombre, precio: precioNum, cantidad: 1 });
+      }
+      guardarCarrito(cart);
+      actualizarBadge();
+    }
+
+    // 6) Al cargar la página, inicializar badge y render
+    document.addEventListener('DOMContentLoaded', function() {
+      // Inicializar badge
+      actualizarBadge();
+
+      // Cuando se abra el offcanvas, renderizar su contenido
+      const offcanvasCartEl = document.getElementById('offcanvasCart');
+      offcanvasCartEl.addEventListener('shown.bs.offcanvas', () => {
+        renderizarCarrito();
+      });
+
+      // Posteriormente llamamos a personalizarInterfaz() (si usas roles)
+      if (typeof personalizarInterfaz === 'function') {
+        personalizarInterfaz();
+      }
+    });
+  </script>
 </body>
 </html>
