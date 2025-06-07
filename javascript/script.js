@@ -13,15 +13,19 @@ function actualizarNavUsuario() {
   const sesion = obtenerSesion();
   const isAdmin = sesion && sesion.rol === 'admin';
 
-  // Panel Admin (clase admin-only)
+  // Panel Admin (elementos con clase .admin-only)
   document.querySelectorAll('.admin-only')
     .forEach(el => el.classList.toggle('d-none', !isAdmin));
 
-  // Registro / Login / Logout
+  // Registro / Login: solo cuando NO hay sesión
   document.getElementById('link-registro')
     .classList.toggle('d-none', !!sesion);
   document.getElementById('link-login')
     .classList.toggle('d-none', !!sesion);
+
+  // Mi Perfil / Logout: solo cuando HAY sesión
+  document.getElementById('btn-profile')
+    .classList.toggle('d-none', !sesion);
   document.getElementById('btn-logout')
     .classList.toggle('d-none', !sesion);
 }
@@ -80,7 +84,10 @@ function animarAlScroll() {
 
 function cambiarTema() {
   document.body.classList.toggle('tema-oscuro');
-  localStorage.setItem('tema', document.body.classList.contains('tema-oscuro') ? 'oscuro' : 'claro');
+  localStorage.setItem(
+    'tema',
+    document.body.classList.contains('tema-oscuro') ? 'oscuro' : 'claro'
+  );
 }
 
 function aplicarTemaGuardado() {
@@ -90,7 +97,7 @@ function aplicarTemaGuardado() {
 }
 
 // =============================
-//   VALIDACIÓN FORMULARIO
+//   VALIDACIÓN FORMULARIO (registro.html)
 // =============================
 function initRegistroValidation() {
   const form = document.getElementById('registroForm');
@@ -126,6 +133,11 @@ function initRegistroValidation() {
 
     alert('🎉 Registro exitoso. ¡Bienvenido/a a CineMax!');
     form.reset();
+
+    // Aquí podrías también guardar el usuario en localStorage para administración
+    const users = JSON.parse(localStorage.getItem('usersCineMax') || '{}');
+    users[correo] = { email: correo, nombre, rol: 'cliente' };
+    localStorage.setItem('usersCineMax', JSON.stringify(users));
   });
 }
 
@@ -135,7 +147,7 @@ function initRegistroValidation() {
 document.addEventListener('DOMContentLoaded', () => {
   console.log('¡Bienvenido a CineMax!');
 
-  // 1) Nav + Logout
+  // 1) Nav + Logout + Perfil
   actualizarNavUsuario();
   configurarLogout();
 
@@ -146,6 +158,6 @@ document.addEventListener('DOMContentLoaded', () => {
   animarAlScroll();
   aplicarTemaGuardado();
 
-  // 3) Validación de registro
+  // 3) Validación registro
   initRegistroValidation();
 });
