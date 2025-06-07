@@ -34,127 +34,37 @@
 <body class="bg-light d-flex flex-column min-vh-100">
   <!-- NAVBAR -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
-    <div class="container">
-      <a class="navbar-brand fs-3" href="index.html">🎬 CineMax</a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarNav"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <!-- Menú izquierdo -->
-        <ul class="navbar-nav me-auto">
-          <li class="nav-item">
-            <a
-              class="nav-link active"
-              aria-current="page"
-              href="index.html"
-              >Inicio</a
-            >
-          </li>
-          <!-- Panel Admin (solo admin) -->
-          <li class="nav-item admin-only d-none">
-            <a class="nav-link" href="admin.html">🛡️ Panel Admin</a>
-          </li>
-          <li class="nav-item"><a class="nav-link" href="comedia.html">Comedia</a></li>
-          <li class="nav-item"><a class="nav-link" href="drama.html">Drama</a></li>
-          <li class="nav-item"><a class="nav-link" href="terror.html">Terror</a></li>
-          <li class="nav-item"><a class="nav-link" href="estrategia.html">Estrategia</a></li>
-        </ul>
-
-        <!-- Menú derecho: carrito + usuario/registro/login -->
-        <ul class="navbar-nav ms-auto align-items-center">
-          <!-- Icono de carrito -->
-          <li class="nav-item me-3">
-            <a
-              class="nav-link position-relative"
-              href="#"
-              data-bs-toggle="offcanvas"
-              data-bs-target="#offcanvasCart"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                fill="currentColor"
-                class="bi bi-cart3"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  d="M0 1.5A.5.5 0 0 1 .5 1h1a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 
-                     .491.592l-1.5 8A.5.5 0 0 1 13 13H4a.5.5 0 0 1-.491-.408L1.01 
-                     3.607  .607 2H.5a.5.5 0 0 1-.5-.5zM3.102 
-                     5L4.415 12h8.17l1.313-7H3.102zM5 12a2 
-                     2 0 1 0 0 4 2 2 0 0 0 0-4zm7 
-                     0a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"
-                />
-              </svg>
-              <span
-                id="cart-count-badge"
-                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                style="font-size: 0.75rem;"
-                >0</span
-              >
-            </a>
-          </li>
-
-          <!-- Cuando NO hay sesión -->
-          <div id="menu-sin-sesion">
-            <li class="nav-item">
-              <a class="nav-link" href="register.html">📝 Registro</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="login.html">🔐 Iniciar Sesión</a>
-            </li>
-          </div>
-
-          <!-- Cuando SÍ hay sesión -->
-          <div id="menu-con-sesion" class="d-none">
-            <li class="nav-item dropdown">
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                role="button"
-                data-bs-toggle="dropdown"
-              >
-                <span id="usuario-nombre">👤 Usuario</span>
-                <span
-                  id="usuario-rol"
-                  class="badge bg-secondary ms-1"
-                  >Cliente</span
-                >
-              </a>
-              <ul class="dropdown-menu dropdown-menu-end">
-                <li>
-                  <a class="dropdown-item" href="perfil.html">👤 Mi Perfil</a>
-                </li>
-                <li>
-                  <a class="dropdown-item cliente-only d-none" href="mis-peliculas.html"
-                    >🎬 Mis Películas</a
-                  >
-                </li>
-                <li>
-                  <a class="dropdown-item admin-only d-none" href="admin.html"
-                    >🛡️ Panel Admin</a
-                  >
-                </li>
-                <li><hr class="dropdown-divider" /></li>
-                <li>
-                  <a class="dropdown-item" href="#" onclick="cerrarSesion()"
-                    >🚪 Cerrar Sesión</a
-                  >
-                </li>
-              </ul>
-            </li>
-          </div>
-        </ul>
-      </div>
+  <div class="container">
+    <a class="navbar-brand fs-3" href="index.html">🎬 CineMax</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <!-- Menú Izquierdo -->
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item"><a class="nav-link active" href="index.html">Inicio</a></li>
+        <li class="nav-item admin-only d-none"><a class="nav-link" href="admin.html">🛡️ Panel Admin</a></li>
+        <li class="nav-item"><a class="nav-link" href="comedia.html">Comedia</a></li>
+        <li class="nav-item"><a class="nav-link" href="drama.html">Drama</a></li>
+        <li class="nav-item"><a class="nav-link" href="terror.html">Terror</a></li>
+        <li class="nav-item"><a class="nav-link" href="estrategia.html">Estrategia</a></li>
+      </ul>
+      <!-- Menú Derecho -->
+      <ul class="navbar-nav ms-auto align-items-center">
+        <li class="nav-item me-3">
+          <!-- carrito… -->
+        </li>
+        <li class="nav-item d-flex align-items-center" id="user-menu">
+          <a class="nav-link px-2" href="registro.html" id="link-registro">📝 Registro</a>
+          <a class="nav-link px-2" href="login.html"    id="link-login">🔐 Iniciar Sesión</a>
+          <button class="btn btn-outline-light btn-sm ms-2 d-none" id="btn-logout">🚪 Logout</button>
+        </li>
+      </ul>
     </div>
-  </nav>
+  </div>
+</nav>
+
+
 
   <!-- MENSAJE DE BIENVENIDA PERSONALIZADO -->
   <div
