@@ -4,21 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>CineMax │ Mi Perfil</title>
-  <!-- Bootstrap CSS + Icons -->
+
+  <!-- Bootstrap & Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
+
   <style>
-    .field-row { display: flex; align-items: center; margin-bottom: 1rem; }
-    .field-label { width: 140px; font-weight: 600; }
-    .field-value { flex: 1; }
-    .edit-btn { width: 32px; height: 32px; }
-    .edit-input { width: 100%; }
+    .field-row  {display:flex;align-items:center;margin-bottom:1rem}
+    .field-label{width:140px;font-weight:600}
+    .field-value{flex:1}
+    .edit-btn   {width:32px;height:32px}
+    .edit-input {width:100%}
   </style>
 </head>
 <body class="bg-light d-flex flex-column min-vh-100">
 
-  <!-- NAVBAR -->
+  <!-- NAVBAR (usa mismos IDs que en script.js) -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
     <div class="container">
       <a class="navbar-brand fs-3" href="index.html">🎬 CineMax</a>
@@ -26,7 +28,6 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
-        <!-- Izquierda -->
         <ul class="navbar-nav me-auto">
           <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
           <li class="nav-item admin-only d-none"><a class="nav-link" href="admin.html">🛡️ Panel Admin</a></li>
@@ -35,78 +36,70 @@
           <li class="nav-item"><a class="nav-link" href="terror.html">Terror</a></li>
           <li class="nav-item"><a class="nav-link" href="estrategia.html">Estrategia</a></li>
         </ul>
-        <!-- Derecha -->
+
         <ul class="navbar-nav ms-auto align-items-center">
-          <!-- “Mi Perfil” visible tras login -->
           <li class="nav-item d-none" id="btn-profile">
-            <a class="btn btn-outline-light btn-sm me-2" href="perfil.html">
-              👤 Mi Perfil
-            </a>
+            <a class="btn btn-outline-light btn-sm me-2" href="perfil.html">👤 Mi Perfil</a>
           </li>
-          <!-- Logout -->
           <li class="nav-item">
-            <button id="btn-logout" class="btn btn-outline-light btn-sm">
-              🚪 Logout
-            </button>
+            <button id="btn-logout" class="btn btn-outline-light btn-sm">🚪 Logout</button>
           </li>
         </ul>
       </div>
     </div>
   </nav>
 
+  <!-- CONTENIDO -->
   <main class="container flex-grow-1 py-5">
     <h2 class="mb-4">Mi Perfil</h2>
 
-    <!-- Si no está logueado -->
+    <!-- aviso sin sesión -->
     <div id="not-auth" class="alert alert-danger d-none">
       Debes iniciar sesión para ver tu perfil.
     </div>
 
-    <!-- Contenido del perfil -->
+    <!-- datos -->
     <div id="profile-content" class="d-none">
 
-      <!-- Correo (lectura) -->
+      <!-- correo -->
       <div class="field-row">
         <div class="field-label">Correo</div>
         <div class="field-value"><span id="email-text"></span></div>
       </div>
 
-      <!-- Nombre (editable) -->
+      <!-- nombre -->
       <div class="field-row">
         <div class="field-label">Nombre</div>
         <div class="field-value d-flex align-items-center">
           <span id="nombre-text"></span>
-          <input id="nombre-input" class="form-control form-control-sm edit-input d-none" />
+          <input id="nombre-input" class="form-control form-control-sm edit-input d-none">
         </div>
-        <button type="button" id="btn-edit-nombre" class="btn btn-outline-secondary edit-btn ms-2">
-          <i class="bi bi-pencil"></i>
-        </button>
+        <div class="d-flex ms-2">
+          <button id="btn-edit-nombre" class="btn btn-outline-secondary edit-btn"><i class="bi bi-pencil"></i></button>
+          <button id="btn-save-nombre" class="btn btn-outline-success edit-btn d-none ms-1"><i class="bi bi-check-lg"></i></button>
+        </div>
       </div>
 
-      <!-- Contraseña (editar despliega formulario) -->
+      <!-- contraseña (muestra formulario) -->
       <div class="field-row">
         <div class="field-label">Contraseña</div>
-        <div class="field-value d-flex align-items-center">
-          <span>••••••••</span>
-        </div>
-        <button type="button" id="btn-edit-password" class="btn btn-outline-secondary edit-btn ms-2">
-          <i class="bi bi-pencil"></i>
-        </button>
+        <div class="field-value"><span>••••••••</span></div>
+        <button id="btn-edit-password" class="btn btn-outline-secondary edit-btn ms-2"><i class="bi bi-pencil"></i></button>
       </div>
 
-      <!-- Formulario cambio contraseña -->
+      <!-- form contraseña -->
       <form id="password-form" class="d-none">
         <div class="mb-3 row">
           <label class="col-sm-3 col-form-label">Nueva</label>
           <div class="col-sm-9">
-            <input type="password" id="pass-input" class="form-control form-control-sm" placeholder="Nueva contraseña">
+            <input id="pass-input" type="password" class="form-control form-control-sm" placeholder="Nueva contraseña">
           </div>
         </div>
         <div class="mb-3 row">
           <label class="col-sm-3 col-form-label">Confirmar</label>
           <div class="col-sm-9 d-flex">
-            <input type="password" id="pass2-input" class="form-control form-control-sm" placeholder="Confirmar contraseña">
-            <button type="button" id="btn-save-password" class="btn btn-outline-success edit-btn ms-2">
+            <input id="pass2-input" type="password" class="form-control form-control-sm" placeholder="Confirmar contraseña">
+            <button id="btn-save-password" type="button" class="btn btn-outline-success edit-btn ms-2">
               <i class="bi bi-check-lg"></i>
             </button>
           </div>
@@ -120,11 +113,9 @@
     © 2024 CineMax. Todos los derechos reservados.
   </footer>
 
-  <!-- Bootstrap JS + tus scripts -->
+  <!-- JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- Helpers, nav y logout -->
   <script src="javascript/script.js"></script>
-  <!-- Lógica específica de perfil -->
   <script src="javascript/perfil.js"></script>
 </body>
 </html>

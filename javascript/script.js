@@ -1,35 +1,52 @@
+// javascript/script.js
+
 // =============================
 //   HELPER: Sesión Usuario
 // =============================
 function obtenerSesion() {
-  const sesion = sessionStorage.getItem('sesionCineMax');
-  return sesion ? JSON.parse(sesion) : null;
+  const s = sessionStorage.getItem('sesionCineMax');
+  return s ? JSON.parse(s) : null;
 }
 
 // =============================
-//   NAV DINÁMICO + LOGOUT
+//   NAV DINÁMICO + PERFIL + ADMIN + LOGOUT + CARRITO
 // =============================
 function actualizarNavUsuario() {
-  const sesion = obtenerSesion();
-  const isAdmin = sesion && sesion.rol === 'admin';
+  const sesion     = obtenerSesion();
+  const isAdmin    = sesion && sesion.rol === 'admin';
+  const isCliente  = sesion && sesion.rol === 'cliente';
+  const hasSession = !!sesion;
 
-  // Panel Admin (elementos con clase .admin-only)
+  // — Mostrar el carrito solo si es cliente —
+  document.getElementById('nav-cart')
+    .classList.toggle('d-none', !isCliente);
+
+  // — Enlaces internos con clase .admin-only —
   document.querySelectorAll('.admin-only')
     .forEach(el => el.classList.toggle('d-none', !isAdmin));
 
-  // Registro / Login: solo cuando NO hay sesión
+  // — Registro / Login (ocultar si hay sesión) —
   document.getElementById('link-registro')
-    .classList.toggle('d-none', !!sesion);
+    ?.classList.toggle('d-none', hasSession);
   document.getElementById('link-login')
-    .classList.toggle('d-none', !!sesion);
+    ?.classList.toggle('d-none', hasSession);
 
-  // Mi Perfil / Logout: solo cuando HAY sesión
+  // — Mi Perfil (mostrar solo si hay sesión) —
   document.getElementById('btn-profile')
-    .classList.toggle('d-none', !sesion);
+    .classList.toggle('d-none', !hasSession);
+
+  // — Botón Admin (junto a perfil) —
+  document.getElementById('btn-admin')
+    .classList.toggle('d-none', !isAdmin);
+
+  // — Logout (mostrar solo si hay sesión) —
   document.getElementById('btn-logout')
-    .classList.toggle('d-none', !sesion);
+    .classList.toggle('d-none', !hasSession);
 }
 
+// =============================
+//   CONFIGURAR BOTÓN LOGOUT
+// =============================
 function configurarLogout() {
   const btn = document.getElementById('btn-logout');
   if (!btn) return;
@@ -37,8 +54,7 @@ function configurarLogout() {
     if (confirm('¿Seguro que deseas cerrar sesión?')) {
       sessionStorage.removeItem('sesionCineMax');
       localStorage.removeItem('recordarUsuario');
-      actualizarNavUsuario();
-      window.location.reload();
+      window.location.href = 'index.html';
     }
   });
 }
@@ -48,8 +64,12 @@ function configurarLogout() {
 // =============================
 function agregarEfectosHover() {
   document.querySelectorAll('.categoria, .pelicula').forEach(el => {
-    el.addEventListener('mouseenter', () => el.style.boxShadow = '0 8px 25px rgba(0,0,0,0.15)');
-    el.addEventListener('mouseleave', () => el.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)');
+    el.addEventListener('mouseenter', () =>
+      el.style.boxShadow = '0 8px 25px rgba(0,0,0,0.15)'
+    );
+    el.addEventListener('mouseleave', () =>
+      el.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)'
+    );
   });
 }
 
@@ -61,7 +81,9 @@ function mostrarContadorVisitas() {
 
 function validarNavegacion() {
   document.querySelectorAll('nav a').forEach(a =>
-    a.addEventListener('click', () => console.log(`Navegando a: ${a.textContent}`))
+    a.addEventListener('click', () =>
+      console.log(`Navegando a: ${a.textContent}`)
+    )
   );
 }
 
@@ -97,67 +119,19 @@ function aplicarTemaGuardado() {
 }
 
 // =============================
-//   VALIDACIÓN FORMULARIO (registro.html)
-// =============================
-function initRegistroValidation() {
-  const form = document.getElementById('registroForm');
-  if (!form) return;
-  form.addEventListener('submit', e => {
-    e.preventDefault();
-    Array.from(form.elements).forEach(el => el.classList.remove('is-invalid'));
-
-    const nombre   = form.nombre.value.trim();
-    const usuario  = form.usuario.value.trim();
-    const correo   = form.correo.value.trim();
-    const fechaNac = form.fechaNac.value;
-    const clave    = form.clave.value;
-    const clave2   = form.clave2.value;
-
-    let valido = true;
-    const hoy = new Date();
-    const años = hoy.getFullYear() - new Date(fechaNac).getFullYear();
-    const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
-    const passRegex  = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{6,18}$/;
-    const marcarError = id => {
-      form.querySelector(`#${id}`).classList.add('is-invalid');
-      valido = false;
-    };
-
-    if (!nombre)                  marcarError('nombre');
-    if (!usuario)                 marcarError('usuario');
-    if (!emailRegex.test(correo)) marcarError('correo');
-    if (!fechaNac || años < 13)   marcarError('fechaNac');
-    if (!passRegex.test(clave))   marcarError('clave');
-    if (clave !== clave2)         marcarError('clave2');
-    if (!valido) return;
-
-    alert('🎉 Registro exitoso. ¡Bienvenido/a a CineMax!');
-    form.reset();
-
-    // Aquí podrías también guardar el usuario en localStorage para administración
-    const users = JSON.parse(localStorage.getItem('usersCineMax') || '{}');
-    users[correo] = { email: correo, nombre, rol: 'cliente' };
-    localStorage.setItem('usersCineMax', JSON.stringify(users));
-  });
-}
-
-// =============================
-//   INIT TODO AL DOMContentLoaded
+//   INICIALIZACIÓN AL CARGAR
 // =============================
 document.addEventListener('DOMContentLoaded', () => {
   console.log('¡Bienvenido a CineMax!');
 
-  // 1) Nav + Logout + Perfil
+  // 1) Nav dinámico (incluye carrito), perfil, admin y logout
   actualizarNavUsuario();
   configurarLogout();
 
-  // 2) Utilidades
+  // 2) Otras utilidades
   agregarEfectosHover();
   mostrarContadorVisitas();
   validarNavegacion();
   animarAlScroll();
   aplicarTemaGuardado();
-
-  // 3) Validación registro
-  initRegistroValidation();
 });
