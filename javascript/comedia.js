@@ -19,7 +19,7 @@ const comediaMovies = [
     precio: 13990,
     descuento: 0,
     imagen:
-      "https://m.media-amazon.com/images/M/MV5BZDkyMDBiN2EtYTM2Ni00ZjRjLWFmZWQtZDdkZDBhNTQzYTU4XkFqcGc@._V1_.jpg",
+      "https://almomento.mx/wp-content/uploads/2023/04/Mario-Bros.-taquilla-Mexico.jpeg",
   },
   {
     id: 3,
