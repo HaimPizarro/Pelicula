@@ -1,13 +1,13 @@
-//Inicializar usuarios en localStorage si no existen
+// Inicializar usuarios en localStorage si no existen
 if (!localStorage.getItem('usersCineMax')) {
   const initial = {
-    'cliente@cinemax.com': { email:'cliente@cinemax.com', nombre:'Juan Pérez', clave:'Cliente123', rol:'cliente' },
-    'admin@cinemax.com':   { email:'admin@cinemax.com',   nombre:'Haim Pizarro', clave:'Admin123',   rol:'admin' }
+    'cliente@cinemax.com': { email: 'cliente@cinemax.com', nombre: 'Juan Pérez', clave: 'Cliente123', rol: 'cliente' },
+    'admin@cinemax.com':   { email: 'admin@cinemax.com',   nombre: 'Haim Pizarro',   clave: 'Admin123',   rol: 'admin' }
   };
   localStorage.setItem('usersCineMax', JSON.stringify(initial));
 }
 
-//Helpers de almacenamiento
+// Helpers de almacenamiento
 function getAllUsers() {
   return JSON.parse(localStorage.getItem('usersCineMax') || '{}');
 }
@@ -19,7 +19,10 @@ function obtenerSesion() {
   return s ? JSON.parse(s) : null;
 }
 
-//Inicializar panel
+// Expresión para validar contraseña: 6–18 caracteres, 1 mayúscula y 1 número
+const passRx = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{6,18}$/;
+
+// Inicializar página de administración
 function initAdminPage() {
   const sesion = obtenerSesion();
   if (!sesion || sesion.rol !== 'admin') {
@@ -30,7 +33,7 @@ function initAdminPage() {
   renderUsersTable();
 }
 
-//Renderizar tabla de usuarios
+// Renderizar tabla de usuarios
 function renderUsersTable() {
   const tbody = document.getElementById('users-table-body');
   tbody.innerHTML = '';
@@ -41,22 +44,17 @@ function renderUsersTable() {
     tr.innerHTML = `
       <td>${user.email}</td>
       <td>${user.nombre}</td>
-      <td>${user.rol.charAt(0).toUpperCase()+user.rol.slice(1)}</td>
+      <td>${user.rol.charAt(0).toUpperCase() + user.rol.slice(1)}</td>
       <td>
-        <button class="btn btn-sm btn-primary edit-user" data-email="${user.email}">
-          Editar
-        </button>
+        <button class="btn btn-sm btn-primary edit-user" data-email="${user.email}">Editar</button>
         ${user.email !== obtenerSesion().email
-          ? `<button class="btn btn-sm btn-danger ms-2 delete-user" data-email="${user.email}">
-               Eliminar
-             </button>`
-          : ''
-        }
+          ? `<button class="btn btn-sm btn-danger ms-2 delete-user" data-email="${user.email}">Eliminar</button>`
+          : ''}
       </td>`;
     tbody.appendChild(tr);
   });
 
-  // Asignar eventos
+  // Asociar eventos a los botones
   document.querySelectorAll('.edit-user')
     .forEach(btn => btn.addEventListener('click', () => openEditModal(btn.dataset.email)));
   document.querySelectorAll('.delete-user')
@@ -65,7 +63,7 @@ function renderUsersTable() {
     }));
 }
 
-//Abrir modal y precargar datos
+// Abrir modal de edición y precargar datos
 function openEditModal(email) {
   const users = getAllUsers();
   const u = users[email];
@@ -80,26 +78,37 @@ function openEditModal(email) {
   new bootstrap.Modal(document.getElementById('modalEditarUsuario')).show();
 }
 
-//Guardar cambios del modal
-document.getElementById('form-editar-usuario').addEventListener('submit', function(e) {
+// Guardar cambios desde el modal de edición
+document.getElementById('form-editar-usuario').addEventListener('submit', function (e) {
   e.preventDefault();
 
+  // Limpiar errores previos
+  this.querySelectorAll('.form-control').forEach(i => i.classList.remove('is-invalid'));
+  document.getElementById('modal-msg').classList.add('d-none');
+
+  // Valores del formulario
   const originalEmail = document.getElementById('editar-email-original').value;
-  const nombreNew = document.getElementById('editar-nombre-completo').value.trim();
-  const passNew = document.getElementById('editar-clave').value;
-  const pass2New = document.getElementById('editar-clave2').value;
-  const rolNew = document.getElementById('editar-rol').value;
+  const nombreNew     = document.getElementById('editar-nombre-completo').value.trim();
+  const passNew       = document.getElementById('editar-clave').value;
+  const pass2New      = document.getElementById('editar-clave2').value;
+  const rolNew        = document.getElementById('editar-rol').value;
 
-  //Validar contraseñas si ingresadas
-  if ((passNew || pass2New) && passNew !== pass2New) {
-    document.getElementById('editar-clave2').classList.add('is-invalid');
-    return;
-  }
-
-  const users = getAllUsers();
+  const users  = getAllUsers();
   const target = users[originalEmail];
 
-  //Actualizar campos permitidos
+  let valido = true;
+  const error = id => { document.getElementById(id).classList.add('is-invalid'); valido = false; };
+
+  // Validar nueva contraseña solo si se ingresó alguna
+  if (passNew || pass2New) {
+    if (!passRx.test(passNew))      error('editar-clave');        // Formato inválido
+    if (passNew !== pass2New)       error('editar-clave2');       // No coinciden
+    if (passNew === target.clave)   error('editar-clave');        // No repetir la anterior
+  }
+
+  if (!valido) return;
+
+  // Actualizar datos permitidos
   target.nombre = nombreNew;
   if (passNew) target.clave = passNew;
   target.rol    = rolNew;
@@ -109,7 +118,7 @@ document.getElementById('form-editar-usuario').addEventListener('submit', functi
   renderUsersTable();
 });
 
-//Eliminar usuario
+// Eliminar usuario
 function deleteUser(email) {
   const users = getAllUsers();
   delete users[email];
@@ -117,7 +126,7 @@ function deleteUser(email) {
   renderUsersTable();
 }
 
-//Logout
+// Configurar logout
 function configurarLogout() {
   const btn = document.getElementById('btn-logout');
   if (!btn) return;
@@ -130,7 +139,7 @@ function configurarLogout() {
   });
 }
 
-//Arranque
+// Arranque al cargar la página
 document.addEventListener('DOMContentLoaded', () => {
   configurarLogout();
   initAdminPage();
