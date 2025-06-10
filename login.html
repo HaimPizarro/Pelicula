@@ -10,7 +10,6 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/>
 
   <style>
-    /* ---------- Paleta y utilidades ---------- */
     :root{
       --brand-dark:#212529;
       --shadow-lg:0 10px 30px rgba(0,0,0,.1);
@@ -26,18 +25,15 @@
     }
     .btn-brand:hover{background:#343a40;border-color:#343a40;color:#fff;}
 
-    /* ---------- Layout login ---------- */
     .login-container{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem 0;}
     .login-card{max-width:900px;width:100%;box-shadow:var(--shadow-lg);border-radius:15px;overflow:hidden;}
     .login-left{background:#563dff;color:#fff;display:flex;flex-direction:column;justify-content:center;padding:3rem 2rem;}
     .login-left h2{font-weight:700;}
     .login-form{padding:3rem;}
 
-    /* ---------- Inputs ---------- */
     .form-control{border-radius:10px;border:2px solid #e9ecef;padding:.75rem 1rem;transition:.3s;}
     .form-control:focus{border-color:var(--brand-dark);box-shadow:0 0 0 .2rem rgba(33,37,41,.25);}
 
-    /* ---------- Badge roles demo ---------- */
     .role-badge{display:inline-block;padding:.25rem .75rem;border-radius:50px;font-size:.8rem;font-weight:500;margin:.25rem;cursor:pointer;border:2px solid transparent;transition:.3s;}
     .role-badge.cliente{background:#e3f2fd;color:#1976d2;}
     .role-badge.admin{background:#fff3e0;color:#f57c00;}
@@ -52,7 +48,6 @@
 
 <body class="d-flex flex-column">
 
-  <!-- ---------- NAV ---------- -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
     <div class="container">
       <a class="navbar-brand fs-3" href="index.html">🎬 CineMax</a>
@@ -63,7 +58,7 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav me-auto">
           <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
-          <li class="nav-item admin-only d-none"><a class="nav-link" href="admin.html">🛡️ Panel Admin</a></li>
+          <li class="nav-item admin-only d-none"><a class="nav-link" href="admin.html">Panel Admin</a></li>
           <li class="nav-item"><a class="nav-link" href="comedia.html">Comedia</a></li>
           <li class="nav-item"><a class="nav-link" href="drama.html">Drama</a></li>
           <li class="nav-item"><a class="nav-link" href="terror.html">Terror</a></li>
@@ -71,10 +66,10 @@
         </ul>
 
         <ul class="navbar-nav ms-auto align-items-center">
-          <li class="nav-item"><a class="nav-link" href="registro.html" id="link-registro">📝 Registro</a></li>
-          <li class="nav-item"><a class="nav-link active" href="#">🔐 Iniciar Sesión</a></li>
-          <li class="nav-item d-none" id="btn-profile"><a class="btn btn-outline-light btn-sm ms-2" href="perfil.html">👤 Mi Perfil</a></li>
-          <li class="nav-item"><button id="btn-logout" class="btn btn-outline-light btn-sm ms-2 d-none">🚪 Logout</button></li>
+          <li class="nav-item"><a class="nav-link" href="registro.html" id="link-registro">Registro</a></li>
+          <li class="nav-item"><a class="nav-link active" href="#">Iniciar Sesión</a></li>
+          <li class="nav-item d-none" id="btn-profile"><a class="btn btn-outline-light btn-sm ms-2" href="perfil.html">Mi Perfil</a></li>
+          <li class="nav-item"><button id="btn-logout" class="btn btn-outline-light btn-sm ms-2 d-none">Logout</button></li>
         </ul>
       </div>
     </div>
@@ -84,20 +79,18 @@
   <main class="login-container flex-grow-1">
     <div class="login-card row g-0">
 
-      <!-- Columna Izquierda (ilustrativa) -->
       <div class="col-lg-5 login-left">
         <h2 class="mb-3">🎬 Bienvenido a CineMax</h2>
         <p class="mb-4">Accede con tu cuenta para disfrutar de la mejor experiencia cinematográfica.</p>
 
-        <!-- Badges demo (solo informativos) -->
         <h6 class="mb-2">Roles disponibles:</h6>
         <div>
-          <span class="role-badge cliente">👤 Cliente</span>
-          <span class="role-badge admin">🛡️ Administrador</span>
+          <span class="role-badge cliente">Cliente</span>
+          <span class="role-badge admin">Administrador</span>
         </div>
       </div>
 
-      <!-- Columna Derecha (formulario) -->
+      <!-- Columna Derecha -->
       <div class="col-lg-7 login-form">
         <h3 class="mb-4 text-center">Iniciar Sesión</h3>
 
@@ -127,7 +120,7 @@
             <label class="form-check-label" for="recordar">Recordar mis datos</label>
           </div>
 
-          <button type="submit" class="btn btn-brand w-100 py-2 mb-3">🚀 Iniciar Sesión</button>
+          <button type="submit" class="btn btn-brand w-100 py-2 mb-3">Iniciar Sesión</button>
 
           <div class="text-center">
             <p class="mb-2">¿No tienes cuenta? <a href="registro.html">Regístrate aquí</a></p>
@@ -145,13 +138,9 @@
 
   <!-- ---------- SCRIPTS ---------- -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- Tu helper general (actualiza nav, etc.) -->
   <script src="javascript/script.js"></script>
 
   <script>
-  /* ==============================
-     AUTENTICACIÓN – Versión unificada
-  ============================== */
   const usuarios = {
     'cliente@cinemax.com': {
       password:'Cliente123',
@@ -162,7 +151,7 @@
     'admin@cinemax.com': {
       password:'Admin123',
       rol:'admin',
-      nombre:'María González',
+      nombre:'Haim Pizarro',
       perfil:{telefono:'+56 9 8765 4321',fechaNacimiento:'1985-12-10'}
     }
   };
@@ -173,7 +162,6 @@
     const passInp   = document.getElementById('password');
     const recordar  = document.getElementById('recordar');
 
-    /* ---------- Autocompletar demo al hacer clic en badge ---------- */
     document.querySelectorAll('.role-badge').forEach(badge=>{
       badge.addEventListener('click',()=>{
         if(badge.classList.contains('cliente')){
@@ -218,7 +206,7 @@
       if(!usuario || usuario.password!==pass){
         emailInp.classList.add('is-invalid');
         passInp.classList.add('is-invalid');
-        mostrarError('❌ Credenciales incorrectas. Verifica tu email y contraseña.');
+        mostrarError('Credenciales incorrectas. Verifica tu email y contraseña.');
         return;
       }
 
@@ -232,7 +220,7 @@
       };
       sessionStorage.setItem('sesionCineMax',JSON.stringify(sesion));
       if(recordar.checked) localStorage.setItem('recordarUsuario',email);
-      mostrarSuccess(`✅ ¡Bienvenido/a ${usuario.nombre}! Redirigiendo…`);
+      mostrarSuccess(`¡Bienvenido/a ${usuario.nombre}! Redirigiendo…`);
 
       setTimeout(()=>{
         window.location.href = usuario.rol==='admin' ? 'admin.html' : 'index.html';
@@ -256,10 +244,9 @@
       form.appendChild(success);
     }
 
-    console.log('🎬 Sistema de Login CineMax inicializado');
+    console.log('Sistema de Login CineMax inicializado');
   });
 
-  /* ---------- Funciones globales para otras páginas ---------- */
   function cerrarSesion(){
     sessionStorage.removeItem('sesionCineMax');
     localStorage.removeItem('recordarUsuario');

@@ -1,7 +1,3 @@
-// =============================
-//  RECUPERAR CONTRASEÑA (localStorage)
-// =============================
-
 // Helpers de "base de datos"
 function getAllUsers() {
   return JSON.parse(localStorage.getItem('usersCineMax') || '{}');
@@ -24,12 +20,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let targetEmail = null;
 
-  // Paso 1: verificar email
+  //verificar email
   btnVerify.addEventListener('click', () => {
     const correo = emailInput.value.trim().toLowerCase();
     const users  = getAllUsers();
     if (users[correo]) {
-      // email existe → mostrar form de reset
+      //email existe
       targetEmail = correo;
       emailError.classList.add('hidden');
       stepEmail.classList.add('hidden');
@@ -40,15 +36,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Paso 2: reset de contraseña
+  //reset de contraseña
   btnReset.addEventListener('click', () => {
     const p1 = newPassInput.value.trim();
     const p2 = confPassInput.value.trim();
     const regex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{6,18}$/;
 
-    // validaciones
+    //validaciones
     if (!regex.test(p1)) {
-      resetError.textContent = 'La contraseña debe tener 6–18 caracteres, 1 mayúscula y 1 número.';
+      resetError.textContent = 'La contraseña debe tener 6-18 caracteres, 1 mayúscula y 1 número.';
       resetError.classList.remove('hidden');
       return;
     }
@@ -58,12 +54,12 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    // actualizar en localStorage
+    //actualizar en localStorage
     const users = getAllUsers();
-    users[targetEmail].clave = p1;  // campo 'clave' usado en admin.js
+    users[targetEmail].clave = p1; 
     saveAllUsers(users);
 
-    alert('🔑 Contraseña actualizada. Ahora puedes iniciar sesión.');
+    alert('Contraseña actualizada. Ahora puedes iniciar sesión.');
     window.location.href = 'login.html';
   });
 });

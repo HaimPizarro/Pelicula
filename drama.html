@@ -10,15 +10,17 @@
     href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
     rel="stylesheet"
   />
-  <!-- Tu CSS global (hero-drama, badge-discount, s-price, btn-brand, etc.) -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+    rel="stylesheet"
+  />
+
   <link rel="stylesheet" href="css/styles.css" />
 
   <style>
-    /* Ancho del Offcanvas del carrito */
     .offcanvas-cart {
       width: 350px;
     }
-    /* Mensaje “Tu carrito está vacío” */
     .empty-cart {
       text-align: center;
       padding: 2rem 1rem;
@@ -28,6 +30,7 @@
 </head>
 
 <body class="bg-light d-flex flex-column min-vh-100">
+
   <!-- NAVBAR -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
     <div class="container">
@@ -42,122 +45,63 @@
       </button>
 
       <div class="collapse navbar-collapse" id="navbarNav">
-        <!-- Menú izquierdo -->
         <ul class="navbar-nav me-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="index.html">Inicio</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="comedia.html">Comedia</a>
-          </li>
+          <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="comedia.html">Comedia</a></li>
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="drama.html">Drama</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="terror.html">Terror</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="estrategia.html">Estrategia</a>
-          </li>
+          <li class="nav-item"><a class="nav-link" href="terror.html">Terror</a></li>
+          <li class="nav-item"><a class="nav-link" href="estrategia.html">Estrategia</a></li>
         </ul>
 
-        <!-- Menú derecho: carrito + usuario/registro/login -->
+        <!-- Derecha -->
         <ul class="navbar-nav ms-auto align-items-center">
-          <!-- Icono de carrito -->
-          <li class="nav-item me-3">
+          <li id="nav-cart" class="nav-item me-3 d-none">
             <a
               class="nav-link position-relative"
               href="#"
               data-bs-toggle="offcanvas"
               data-bs-target="#offcanvasCart"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                fill="currentColor"
-                class="bi bi-cart3"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  d="M0 1.5A.5.5 0 0 1 .5 1h1a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 
-                     .491.592l-1.5 8A.5.5 0 0 1 13 13H4a.5.5 0 0 1-.491-.408L1.01 
-                     3.607  .607 2H.5a.5.5 0 0 1-.5-.5zM3.102 
-                     5L4.415 12h8.17l1.313-7H3.102zM5 12a2 
-                     2 0 1 0 0 4 2 2 0 0 0 0-4zm7 
-                     0a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"
-                />
-              </svg>
+              <i class="bi bi-cart3" style="font-size:1.4rem;"></i>
               <span
                 id="cart-count-badge"
                 class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                style="font-size: 0.75rem; display: none;"
+                style="font-size:.75rem; display:none"
               >0</span>
             </a>
           </li>
 
-          <!-- Cuando NO hay sesión -->
-          <div id="menu-sin-sesion">
-            <li class="nav-item">
-              <a class="nav-link" href="register.html">📝 Registro</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="login.html">🔐 Iniciar Sesión</a>
-            </li>
-          </div>
+          <!-- VISITANTE -->
+          <li id="link-registro" class="nav-item">
+            <a class="nav-link px-2" href="registro.html">Registro</a>
+          </li>
+          <li id="link-login" class="nav-item">
+            <a class="nav-link px-2" href="login.html">Iniciar Sesión</a>
+          </li>
 
-          <!-- Cuando SÍ hay sesión -->
-          <div id="menu-con-sesion" class="d-none">
-            <li class="nav-item dropdown">
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                role="button"
-                data-bs-toggle="dropdown"
-              >
-                <span id="usuario-nombre">👤 Usuario</span>
-                <span id="usuario-rol" class="badge bg-secondary ms-1">Cliente</span>
-              </a>
-              <ul class="dropdown-menu dropdown-menu-end">
-                <li>
-                  <a class="dropdown-item" href="perfil.html">👤 Mi Perfil</a>
-                </li>
-                <li>
-                  <a class="dropdown-item cliente-only d-none" href="mis-peliculas.html"
-                    >🎬 Mis Películas</a
-                  >
-                </li>
-                <li>
-                  <a class="dropdown-item admin-only d-none" href="admin.html"
-                    >🛡️ Panel Admin</a
-                  >
-                </li>
-                <li><hr class="dropdown-divider" /></li>
-                <li>
-                  <a class="dropdown-item" href="#" onclick="cerrarSesion()"
-                    >🚪 Cerrar Sesión</a
-                  >
-                </li>
-              </ul>
-            </li>
-          </div>
+          <!-- USUARIO LOGUEADO -->
+          <li id="btn-profile" class="nav-item d-none">
+            <a class="btn btn-outline-light btn-sm me-2" href="perfil.html">Mi Perfil</a>
+          </li>
+          <li id="btn-admin" class="nav-item d-none">
+            <a class="btn btn-outline-warning btn-sm me-2" href="admin.html">Admin</a>
+          </li>
+          <li id="btn-logout" class="nav-item d-none">
+            <button class="btn btn-outline-light btn-sm">Logout</button>
+          </li>
         </ul>
       </div>
     </div>
   </nav>
 
-  <!-- MENSAJE DE BIENVENIDA PERSONALIZADO -->
-  <div
-    id="bienvenida-usuario"
-    class="alert alert-success alert-dismissible fade show m-0 d-none"
-  >
+  <div id="bienvenida-usuario" class="alert alert-success alert-dismissible fade show m-0 d-none">
     <div class="container">
       <div class="d-flex align-items-center">
         <div class="flex-grow-1">
           <strong>¡Bienvenido/a de vuelta!</strong>
-          <span id="mensaje-bienvenida"
-            >Has iniciado sesión correctamente.</span
-          >
+          <span id="mensaje-bienvenida">Has iniciado sesión correctamente.</span>
         </div>
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
       </div>
@@ -172,10 +116,9 @@
     </div>
   </header>
 
-  <!-- SECCIÓN DE PELÍCULAS (contenedor vacío; se rellenará con JS) -->
+  <!-- SECCIÓN DE PELÍCULAS -->
   <main class="container py-5">
     <div id="drama-container" class="row row-cols-1 row-cols-md-3 g-4 fade-up">
-      <!-- Aquí se insertarán dinámicamente las tarjetas -->
     </div>
   </main>
 
@@ -186,7 +129,6 @@
     </div>
   </footer>
 
-  <!-- OFFCANVAS: Carrito de Compras -->
   <div
     class="offcanvas offcanvas-end offcanvas-cart"
     tabindex="-1"
@@ -195,23 +137,11 @@
   >
     <div class="offcanvas-header">
       <h5 class="offcanvas-title" id="offcanvasCartLabel">🛒 Tu Carrito</h5>
-      <button
-        type="button"
-        class="btn-close text-reset"
-        data-bs-dismiss="offcanvas"
-        aria-label="Cerrar"
-      ></button>
+      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
     </div>
     <div class="offcanvas-body d-flex flex-column">
-      <!-- Lista de items -->
       <ul id="cart-items-list" class="list-group mb-3"></ul>
-
-      <!-- Si está vacío -->
-      <div id="empty-cart" class="empty-cart d-none">
-        Tu carrito está vacío
-      </div>
-
-      <!-- Totales y botón de checkout -->
+      <div id="empty-cart" class="empty-cart d-none">Tu carrito está vacío</div>
       <div id="cart-footer" class="mt-auto d-none">
         <div class="d-flex justify-content-between mb-3">
           <strong>Total:</strong>
@@ -222,92 +152,9 @@
     </div>
   </div>
 
-  <!-- 1) Carga de librerías -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- 2) Lógica de roles y autenticación -->
   <script src="javascript/script.js"></script>
-  <!-- 3) Datos de las películas de drama -->
   <script src="javascript/drama.js"></script>
-  <!-- 4) Lógica del carrito centralizada -->
   <script src="javascript/cart.js"></script>
-
-  <!-- 5) Script para renderizar dinámicamente las tarjetas de drama -->
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      // 1) Personalizamos la interfaz (roles/sesión)
-      if (typeof personalizarInterfaz === 'function') {
-        personalizarInterfaz();
-      }
-
-      // 2) Obtenemos la sesión y verificamos si es cliente
-      const sesion = obtenerSesion();
-      const esCliente = sesion && sesion.rol === 'cliente';
-
-      // 3) Generamos las tarjetas
-      const contenedor = document.getElementById('drama-container');
-      if (!window.dramaMovies || !Array.isArray(window.dramaMovies)) {
-        console.error('dramaMovies no está disponible.');
-        return;
-      }
-
-      dramaMovies.forEach(pelicula => {
-        // Cálculo del precio final (aplica descuento si > 0)
-        const precioFinal = pelicula.descuento > 0
-          ? Math.round(pelicula.precio * (1 - pelicula.descuento / 100))
-          : pelicula.precio;
-
-        // Contenedor .col
-        const columna = document.createElement('div');
-        columna.className = 'col';
-
-        // Si es cliente, mostrar precio + botón; si no, no.
-        const precioYBotonHTML = esCliente
-          ? `
-            <div class="s-price mb-3">$${precioFinal.toLocaleString()}</div>
-            <button
-              class="btn btn-brand w-100 mt-auto"
-              onclick="agregarAlCarrito('${pelicula.titulo}', '$${precioFinal.toLocaleString()}')"
-            >
-              Agregar al carrito
-            </button>
-          `
-          : '';
-
-        columna.innerHTML = `
-          <div class="card h-100 shadow-sm border-0 position-relative">
-            ${pelicula.descuento > 0
-              ? `<span class="badge bg-danger badge-discount">-${pelicula.descuento}%</span>`
-              : ''
-            }
-            <div class="ratio ratio-4x3">
-              <img
-                src="${pelicula.imagen}"
-                class="card-img-top object-fit-cover rounded-top"
-                alt="${pelicula.titulo}"
-              />
-            </div>
-            <div class="card-body d-flex flex-column text-center">
-              <h5 class="card-title fw-semibold">
-                ${pelicula.titulo} (${pelicula.año})
-              </h5>
-              <p class="card-text flex-grow-1">${pelicula.descripción}</p>
-              ${precioYBotonHTML}
-            </div>
-          </div>
-        `;
-
-        contenedor.appendChild(columna);
-      });
-
-      // 4) Inicializar badge y offcanvas
-      actualizarBadge();
-      const offcanvasCartEl = document.getElementById('offcanvasCart');
-      if (offcanvasCartEl) {
-        offcanvasCartEl.addEventListener('shown.bs.offcanvas', () => {
-          renderizarCarrito();
-        });
-      }
-    });
-  </script>
 </body>
 </html>

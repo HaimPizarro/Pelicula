@@ -1,15 +1,13 @@
-// admin.js
-
-// 1) Inicializar usuarios en localStorage si no existen
+//Inicializar usuarios en localStorage si no existen
 if (!localStorage.getItem('usersCineMax')) {
   const initial = {
     'cliente@cinemax.com': { email:'cliente@cinemax.com', nombre:'Juan Pérez', clave:'Cliente123', rol:'cliente' },
-    'admin@cinemax.com':   { email:'admin@cinemax.com',   nombre:'María González', clave:'Admin123',   rol:'admin' }
+    'admin@cinemax.com':   { email:'admin@cinemax.com',   nombre:'Haim Pizarro', clave:'Admin123',   rol:'admin' }
   };
   localStorage.setItem('usersCineMax', JSON.stringify(initial));
 }
 
-// 2) Helpers de almacenamiento
+//Helpers de almacenamiento
 function getAllUsers() {
   return JSON.parse(localStorage.getItem('usersCineMax') || '{}');
 }
@@ -21,7 +19,7 @@ function obtenerSesion() {
   return s ? JSON.parse(s) : null;
 }
 
-// 3) Inicializar panel
+//Inicializar panel
 function initAdminPage() {
   const sesion = obtenerSesion();
   if (!sesion || sesion.rol !== 'admin') {
@@ -32,7 +30,7 @@ function initAdminPage() {
   renderUsersTable();
 }
 
-// 4) Renderizar tabla de usuarios
+//Renderizar tabla de usuarios
 function renderUsersTable() {
   const tbody = document.getElementById('users-table-body');
   tbody.innerHTML = '';
@@ -67,32 +65,32 @@ function renderUsersTable() {
     }));
 }
 
-// 5) Abrir modal y precargar datos
+//Abrir modal y precargar datos
 function openEditModal(email) {
   const users = getAllUsers();
   const u = users[email];
   if (!u) return;
 
-  document.getElementById('editar-email-original').value   = u.email;
+  document.getElementById('editar-email-original').value = u.email;
   document.getElementById('editar-nombre-completo').value = u.nombre;
-  document.getElementById('editar-clave').value          = '';
-  document.getElementById('editar-clave2').value         = '';
-  document.getElementById('editar-rol').value            = u.rol;
+  document.getElementById('editar-clave').value = '';
+  document.getElementById('editar-clave2').value = '';
+  document.getElementById('editar-rol').value = u.rol;
 
   new bootstrap.Modal(document.getElementById('modalEditarUsuario')).show();
 }
 
-// 6) Guardar cambios del modal
+//Guardar cambios del modal
 document.getElementById('form-editar-usuario').addEventListener('submit', function(e) {
   e.preventDefault();
 
   const originalEmail = document.getElementById('editar-email-original').value;
-  const nombreNew     = document.getElementById('editar-nombre-completo').value.trim();
-  const passNew       = document.getElementById('editar-clave').value;
-  const pass2New      = document.getElementById('editar-clave2').value;
-  const rolNew        = document.getElementById('editar-rol').value;
+  const nombreNew = document.getElementById('editar-nombre-completo').value.trim();
+  const passNew = document.getElementById('editar-clave').value;
+  const pass2New = document.getElementById('editar-clave2').value;
+  const rolNew = document.getElementById('editar-rol').value;
 
-  // Validar contraseñas si ingresadas
+  //Validar contraseñas si ingresadas
   if ((passNew || pass2New) && passNew !== pass2New) {
     document.getElementById('editar-clave2').classList.add('is-invalid');
     return;
@@ -101,7 +99,7 @@ document.getElementById('form-editar-usuario').addEventListener('submit', functi
   const users = getAllUsers();
   const target = users[originalEmail];
 
-  // Actualizar campos permitidos
+  //Actualizar campos permitidos
   target.nombre = nombreNew;
   if (passNew) target.clave = passNew;
   target.rol    = rolNew;
@@ -111,7 +109,7 @@ document.getElementById('form-editar-usuario').addEventListener('submit', functi
   renderUsersTable();
 });
 
-// 7) Eliminar usuario
+//Eliminar usuario
 function deleteUser(email) {
   const users = getAllUsers();
   delete users[email];
@@ -119,7 +117,7 @@ function deleteUser(email) {
   renderUsersTable();
 }
 
-// 8) Logout
+//Logout
 function configurarLogout() {
   const btn = document.getElementById('btn-logout');
   if (!btn) return;
@@ -132,7 +130,7 @@ function configurarLogout() {
   });
 }
 
-// 9) Arranque
+//Arranque
 document.addEventListener('DOMContentLoaded', () => {
   configurarLogout();
   initAdminPage();

@@ -1,52 +1,39 @@
-// javascript/script.js
-
-// =============================
-//   HELPER: Sesión Usuario
-// =============================
 function obtenerSesion() {
-  const s = sessionStorage.getItem('sesionCineMax');
-  return s ? JSON.parse(s) : null;
+  const raw = sessionStorage.getItem('sesionCineMax');
+  return raw ? JSON.parse(raw) : null;
 }
 
-// =============================
-//   NAV DINÁMICO + PERFIL + ADMIN + LOGOUT + CARRITO
-// =============================
 function actualizarNavUsuario() {
   const sesion     = obtenerSesion();
-  const isAdmin    = sesion && sesion.rol === 'admin';
-  const isCliente  = sesion && sesion.rol === 'cliente';
-  const hasSession = !!sesion;
+  const hasSesion  = !!sesion;
+  const isCliente  = sesion?.rol === 'cliente';
+  const isAdmin    = sesion?.rol === 'admin';
 
-  // — Mostrar el carrito solo si es cliente —
+  // Carrito solo para clientes
   document.getElementById('nav-cart')
-    .classList.toggle('d-none', !isCliente);
+    ?.classList.toggle('d-none', !isCliente);
 
-  // — Enlaces internos con clase .admin-only —
+  // Botón Admin junto a perfil
+  document.getElementById('btn-admin')
+    ?.classList.toggle('d-none', !isAdmin);
+
+  // Registro / Login
+  document.getElementById('link-registro')
+    ?.classList.toggle('d-none', hasSesion);
+  document.getElementById('link-login')
+    ?.classList.toggle('d-none', hasSesion);
+
+  // Perfil / Logout
+  document.getElementById('btn-profile')
+    ?.classList.toggle('d-none', !hasSesion);
+  document.getElementById('btn-logout')
+    ?.classList.toggle('d-none', !hasSesion);
+
+  // Cualquier .admin-only
   document.querySelectorAll('.admin-only')
     .forEach(el => el.classList.toggle('d-none', !isAdmin));
-
-  // — Registro / Login (ocultar si hay sesión) —
-  document.getElementById('link-registro')
-    ?.classList.toggle('d-none', hasSession);
-  document.getElementById('link-login')
-    ?.classList.toggle('d-none', hasSession);
-
-  // — Mi Perfil (mostrar solo si hay sesión) —
-  document.getElementById('btn-profile')
-    .classList.toggle('d-none', !hasSession);
-
-  // — Botón Admin (junto a perfil) —
-  document.getElementById('btn-admin')
-    .classList.toggle('d-none', !isAdmin);
-
-  // — Logout (mostrar solo si hay sesión) —
-  document.getElementById('btn-logout')
-    .classList.toggle('d-none', !hasSession);
 }
 
-// =============================
-//   CONFIGURAR BOTÓN LOGOUT
-// =============================
 function configurarLogout() {
   const btn = document.getElementById('btn-logout');
   if (!btn) return;
@@ -59,9 +46,6 @@ function configurarLogout() {
   });
 }
 
-// =============================
-//   EFECTOS Y UTILIDADES
-// =============================
 function agregarEfectosHover() {
   document.querySelectorAll('.categoria, .pelicula').forEach(el => {
     el.addEventListener('mouseenter', () =>
@@ -118,20 +102,216 @@ function aplicarTemaGuardado() {
   }
 }
 
-// =============================
-//   INICIALIZACIÓN AL CARGAR
-// =============================
+function initDramaPage() {
+  const cont = document.getElementById('drama-container');
+  if (!cont || !Array.isArray(window.dramaMovies)) return;
+  cont.innerHTML = '';
+  const sesion = obtenerSesion();
+  const isClient = sesion?.rol === 'cliente';
+
+  window.dramaMovies.forEach(pelicula => {
+    const precioFinal = pelicula.descuento > 0
+      ? Math.round(pelicula.precio * (1 - pelicula.descuento / 100))
+      : pelicula.precio;
+
+    const col = document.createElement('div');
+    col.className = 'col';
+    col.innerHTML = `
+      <div class="card h-100 shadow-sm border-0 position-relative">
+        ${pelicula.descuento > 0
+          ? `<span class="badge bg-danger badge-discount">-${pelicula.descuento}%</span>`
+          : ''
+        }
+        <div class="ratio ratio-4x3">
+          <img src="${pelicula.imagen}"
+               class="card-img-top object-fit-cover rounded-top"
+               alt="${pelicula.titulo}">
+        </div>
+        <div class="card-body d-flex flex-column text-center">
+          <h5 class="card-title fw-semibold">${pelicula.titulo} (${pelicula.año})</h5>
+          <p class="card-text flex-grow-1">${pelicula.descripción}</p>
+          ${isClient
+            ? `<div class="s-price mb-3">$${precioFinal.toLocaleString()}</div>
+               <button class="btn btn-brand w-100 mt-auto"
+                       onclick="agregarAlCarrito('${pelicula.titulo}', '$${precioFinal.toLocaleString()}')">
+                 Agregar al carrito
+               </button>`
+            : ''
+          }
+        </div>
+      </div>`;
+    cont.appendChild(col);
+  });
+
+  if (typeof actualizarBadge === 'function') actualizarBadge();
+  document.getElementById('offcanvasCart')
+    ?.addEventListener('shown.bs.offcanvas', () => renderizarCarrito());
+}
+
+function initComediaPage() {
+  const cont = document.getElementById('comedia-container');
+  if (!cont || !Array.isArray(window.comediaMovies)) return;
+  cont.innerHTML = '';
+  const sesion = obtenerSesion();
+  const isClient = sesion?.rol === 'cliente';
+
+  window.comediaMovies.forEach(peli => {
+    const precioFinal = peli.descuento > 0
+      ? Math.round(peli.precio * (1 - peli.descuento / 100))
+      : peli.precio;
+
+    const col = document.createElement('div');
+    col.className = 'col';
+    col.innerHTML = `
+      <div class="card h-100 shadow-sm border-0 position-relative">
+        ${peli.descuento > 0
+          ? `<span class="badge bg-danger badge-discount">-${peli.descuento}%</span>`
+          : ''
+        }
+        <div class="ratio ratio-4x3">
+          <img src="${peli.imagen}"
+               class="card-img-top object-fit-cover rounded-top"
+               alt="${peli.titulo}">
+        </div>
+        <div class="card-body d-flex flex-column text-center">
+          <h5 class="card-title fw-semibold">${peli.titulo} (${peli.año})</h5>
+          <p class="card-text flex-grow-1">${peli.descripción}</p>
+          ${isClient
+            ? `<div class="s-price mb-3">$${precioFinal.toLocaleString()}</div>
+               <button class="btn btn-brand w-100 mt-auto"
+                       onclick="agregarAlCarrito('${peli.titulo}', '$${precioFinal.toLocaleString()}')">
+                 Agregar al carrito
+               </button>`
+            : ''
+          }
+        </div>
+      </div>`;
+    cont.appendChild(col);
+  });
+
+  actualizarBadge();
+  document.getElementById('offcanvasCart')
+    ?.addEventListener('shown.bs.offcanvas', () => renderizarCarrito());
+}
+
+function initEstrategiaPage() {
+  const cont = document.getElementById('estrategia-container');
+  if (!cont || !Array.isArray(window.estrategiaMovies)) return;
+  cont.innerHTML = '';
+  const sesion = obtenerSesion();
+  const isClient = sesion?.rol === 'cliente';
+
+  window.estrategiaMovies.forEach(peli => {
+    const precioFinal = peli.descuento > 0
+      ? Math.round(peli.precio * (1 - peli.descuento / 100))
+      : peli.precio;
+
+    const col = document.createElement('div');
+    col.className = 'col';
+    col.innerHTML = `
+      <div class="card h-100 shadow-sm border-0 position-relative">
+        ${peli.descuento > 0
+          ? `<span class="badge bg-danger badge-discount">-${peli.descuento}%</span>`
+          : ''
+        }
+        <div class="ratio ratio-4x3">
+          <img src="${peli.imagen}"
+               class="card-img-top object-fit-cover rounded-top"
+               alt="${peli.titulo}">
+        </div>
+        <div class="card-body d-flex flex-column text-center">
+          <h5 class="card-title fw-semibold">${peli.titulo} (${peli.año})</h5>
+          <p class="card-text flex-grow-1">${peli.descripción}</p>
+          ${isClient
+            ? `<div class="s-price mb-3">$${precioFinal.toLocaleString()}</div>
+               <button class="btn btn-brand w-100 mt-auto"
+                       onclick="agregarAlCarrito('${peli.titulo}', '$${precioFinal.toLocaleString()}')">
+                 Agregar al carrito
+               </button>`
+            : ''
+          }
+        </div>
+      </div>`;
+    cont.appendChild(col);
+  });
+
+  actualizarBadge();
+  document.getElementById('offcanvasCart')
+    ?.addEventListener('shown.bs.offcanvas', () => renderizarCarrito());
+}
+
+function initTerrorPage() {
+  const cont = document.getElementById('terror-container');
+  if (!cont || !Array.isArray(window.terrorMovies)) return;
+  cont.innerHTML = '';
+  const sesion = obtenerSesion();
+  const isClient = sesion?.rol === 'cliente';
+
+  window.terrorMovies.forEach(peli => {
+    const precioFinal = peli.descuento > 0
+      ? Math.round(peli.precio * (1 - peli.descuento / 100))
+      : peli.precio;
+
+    const col = document.createElement('div');
+    col.className = 'col';
+    col.innerHTML = `
+      <div class="card h-100 shadow-sm border-0 position-relative">
+        ${peli.descuento > 0
+          ? `<span class="badge bg-danger badge-discount">-${peli.descuento}%</span>`
+          : ''
+        }
+        <div class="ratio ratio-4x3">
+          <img src="${peli.imagen}"
+               class="card-img-top object-fit-cover rounded-top"
+               alt="${peli.titulo}">
+        </div>
+        <div class="card-body d-flex flex-column text-center">
+          <h5 class="card-title fw-semibold">${peli.titulo} (${peli.año})</h5>
+          <p class="card-text flex-grow-1">${peli.descripción}</p>
+          ${isClient
+            ? `<div class="s-price mb-3">$${precioFinal.toLocaleString()}</div>
+               <button class="btn btn-brand w-100 mt-auto"
+                       onclick="agregarAlCarrito('${peli.titulo}', '$${precioFinal.toLocaleString()}')">
+                 Agregar al carrito
+               </button>`
+            : ''
+          }
+        </div>
+      </div>`;
+    cont.appendChild(col);
+  });
+
+  actualizarBadge();
+  document.getElementById('offcanvasCart')
+    ?.addEventListener('shown.bs.offcanvas', () => renderizarCarrito());
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   console.log('¡Bienvenido a CineMax!');
 
-  // 1) Nav dinámico (incluye carrito), perfil, admin y logout
+  //Navbar dinámico
   actualizarNavUsuario();
   configurarLogout();
 
-  // 2) Otras utilidades
+  //Efectos y utilidades
   agregarEfectosHover();
   mostrarContadorVisitas();
   validarNavegacion();
   animarAlScroll();
+  cambiarTema();
   aplicarTemaGuardado();
+
+  //Inicializar cada sección si existe
+  if (document.getElementById('drama-container')) {
+    initDramaPage();
+  }
+  if (document.getElementById('comedia-container')) {
+    initComediaPage();
+  }
+  if (document.getElementById('estrategia-container')) {
+    initEstrategiaPage();
+  }
+  if (document.getElementById('terror-container')) {
+    initTerrorPage();
+  }
 });

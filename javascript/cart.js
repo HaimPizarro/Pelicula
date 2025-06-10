@@ -1,24 +1,16 @@
-// === cart.js ===
-// Lógica para carrito de compras reutilizable en todas las páginas.
-// Requiere que las páginas llamen a estas funciones y tengan en su HTML:
-// 1) Un ícono de carrito con <span id="cart-count-badge"> para el contador.
-// 2) Un Offcanvas con id="offcanvasCart", lista <ul id="cart-items-list">,
-//    <div id="empty-cart"> para mensaje vacío y <div id="cart-footer"> para el total.
-// 3) Botones que llamen a agregarAlCarrito(nombre, precioStr).
-
 (function () {
-  // ------- 1) Obtener carrito desde localStorage (o inicializar vacío) -------
+  //Obtener carrito desde localStorage (o inicializar vacío)
   function obtenerCarrito() {
     const raw = localStorage.getItem('cineMaxCart');
     return raw ? JSON.parse(raw) : [];
   }
 
-  // ------- 2) Guardar carrito en localStorage -------
+  //Guardar carrito en localStorage
   function guardarCarrito(cart) {
     localStorage.setItem('cineMaxCart', JSON.stringify(cart));
   }
 
-  // ------- 3) Actualizar badge de carrito (contador) -------
+  //Actualizar badge de carrito (contador)
   function actualizarBadge() {
     const cart = obtenerCarrito();
     const count = cart.reduce((sum, item) => sum + item.cantidad, 0);
@@ -28,7 +20,7 @@
     badge.style.display = count > 0 ? 'inline-block' : 'none';
   }
 
-  // ------- 4) Renderizar lista de items en el offcanvas -------
+  //Renderizar lista de items en el offcanvas
   function renderizarCarrito() {
     const cart = obtenerCarrito();
     const list = document.getElementById('cart-items-list');
@@ -82,10 +74,8 @@
     });
   }
 
-  // ------- 5) Función global: agregar al carrito -------
-  // nombre: string, precioStr: e.g. "$16.990" o "16990"
+  //Función global: agregar al carrito
   function agregarAlCarrito(nombre, precioStr) {
-    // Convertir "$16.990" a 16990
     const precioNum = parseInt(precioStr.replace(/\$/g, '').replace(/\./g, ''));
     let cart = obtenerCarrito();
 
@@ -99,12 +89,11 @@
     actualizarBadge();
   }
 
-  // ------- 6) Inicialización al cargar cada página -------
+  //Inicialización al cargar cada página
   document.addEventListener('DOMContentLoaded', function () {
     // Mostrar badge con la cantidad de items
     actualizarBadge();
 
-    // Cuando se abra el offcanvas, renderizar su contenido
     const offcanvasCartEl = document.getElementById('offcanvasCart');
     if (offcanvasCartEl) {
       offcanvasCartEl.addEventListener('shown.bs.offcanvas', () => {
@@ -113,7 +102,6 @@
     }
   });
 
-  // Exponer funciones en el scope global
   window.obtenerCarrito = obtenerCarrito;
   window.guardarCarrito = guardarCarrito;
   window.actualizarBadge = actualizarBadge;
